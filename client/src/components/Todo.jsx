@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./styles.css";
 
 function Todo() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
+
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   useEffect(() => {
     async function fetchTodos() {
@@ -21,7 +28,8 @@ function Todo() {
   };
 
   return (
-    <div>
+    <div className={darkMode ? "dark-mode" : ""}>
+      <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
       <input value={task} onChange={(e) => setTask(e.target.value)} />
       <button onClick={addTodo}>Add</button>
       <ul>
