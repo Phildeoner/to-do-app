@@ -11,6 +11,9 @@ function Todo() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState({ users: [], todos: [] });
+
   const register = async () => {
     await axios.post("http://localhost:5000/register", { username, password });
     setUsername("");
@@ -30,10 +33,25 @@ function Todo() {
   }, []);
 
   const addTodo = async () => {
-    const newTodo = { task, completed: false };
+    const tags = task.match(/@\w+/g) || [];
+    const hashtags = task.match(/#\w+/g) || [];
+
+    const newTodo = { task, completed: false, tags, hashtags };
     const response = await axios.post("http://localhost:5000/todos", newTodo);
     setTodos([...todos, response.data]);
     setTask("");
+  };
+
+  const search = async () => {
+    const response = await axios.get(
+      `http://localhost:5000/search?query=${searchQuery}`
+    );
+    setSearchResults(response.data);
+  };
+
+  const deleteTodo = async (id) => {
+    await axios.delete(`http://localhost:5000/todos/${id}`);
+    setTodos(todos.filter((todo) => todo._id !== id));
   };
 
   return (
@@ -98,13 +116,45 @@ function Todo() {
           </button>
           <div>
             {todos.map((todo) => (
-              <p
-                className="border p-3 mb-3 rounded hover:bg-red-400 cursor-pointer text-lg font-semibold"
-                key={todo._id}>
-                {todo.task}
-              </p>
+              <div className="flex justify-between items-center border p-3 mb-3 rounded hover:bg-red-400 cursor-pointer text-lg font-semibold">
+                <p key={todo._id}>{todo.task}</p>
+                <button onClick={() => deleteTodo(todo._id)}>
+                  <svg
+                    class="w-6 h-6 text-gray-800 hover:text-white dark:text-red-700"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 18 20">
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"
+                    />
+                  </svg>
+                </button>
+              </div>
             ))}
           </div>
+        </div>
+      </div>
+      <div>
+        <input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search..."
+        />
+        <button onClick={search}>Search</button>
+        <div>
+          <h3>Users:</h3>
+          {searchResults.users.map((user) => (
+            <p key={user._id}>{user.username}</p>
+          ))}
+          <h3>Todos:</h3>
+          {searchResults.todos.map((todo) => (
+            <p key={todo._id}>{todo.task}</p>
+          ))}
         </div>
       </div>
     </div>
