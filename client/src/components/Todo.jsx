@@ -29,7 +29,7 @@ function Todo() {
 
   return (
     <div className={darkMode ? "dark-mode" : ""}>
-      <h1>Todo App</h1>
+      <h1 className="text-4xl font-bold text-center p-5">Todo Application</h1>
       <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
       <input value={task} onChange={(e) => setTask(e.target.value)} />
       <button onClick={addTodo}>Add</button>
