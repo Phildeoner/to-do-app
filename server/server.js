@@ -20,6 +20,8 @@ app.use(express.json());
 const TodoSchema = new mongoose.Schema({
   task: String,
   completed: Boolean,
+  tags: [String], // for tagging users
+  hashtags: [String], // for hashtags
 });
 
 const Todo = mongoose.model("Todo", TodoSchema);
@@ -59,13 +61,6 @@ app.post("/register", async (req, res) => {
   const user = new User({ username, password });
   await user.save();
   res.json({ message: "User registered successfully!" });
-});
-
-const TodoSchema = new mongoose.Schema({
-  task: String,
-  completed: Boolean,
-  tags: [String], // for tagging users
-  hashtags: [String], // for hashtags
 });
 
 app.get("/search", async (req, res) => {
