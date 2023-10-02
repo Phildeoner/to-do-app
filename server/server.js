@@ -38,6 +38,17 @@ app.post("/todos", async (req, res) => {
   res.json(newTodo);
 });
 
+// Add this route to support delete functionality
+app.delete("/todos/:id", async (req, res) => {
+  try {
+    const todo = await Todo.findByIdAndDelete(req.params.id);
+    if (!todo) return res.status(404).json({ message: "Todo not found" });
+    res.json({ message: "Todo deleted successfully!" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
