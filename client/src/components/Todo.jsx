@@ -15,9 +15,41 @@ function Todo() {
   const [searchResults, setSearchResults] = useState({ users: [], todos: [] });
 
   const register = async () => {
-    await axios.post("http://localhost:5000/register", { username, password });
-    setUsername("");
-    setPassword("");
+    if (!username.trim() || !password.trim()) {
+      alert("Both username and password are required!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/register", {
+        username,
+        password,
+      });
+
+      if (response.status === 201) {
+        alert("User successfully created!");
+      } else if (
+        response.data &&
+        response.data.error === "Username already exists"
+      ) {
+        alert("Username already exists. Please choose a different username.");
+      } else {
+        alert("Error creating user. Please try again.");
+      }
+
+      setUsername("");
+      setPassword("");
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error === "Username already exists"
+      ) {
+        alert("Username already exists. Please choose a different username.");
+      } else {
+        alert("Error creating user. Please try again.");
+      }
+    }
   };
 
   const toggleDarkMode = () => {
