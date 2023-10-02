@@ -33,6 +33,11 @@ function Todo() {
   }, []);
 
   const addTodo = async () => {
+    if (task.trim() === "") {
+      alert("Please enter a valid todo!");
+      return;
+    }
+
     const tags = task.match(/@\w+/g) || [];
     const hashtags = task.match(/#\w+/g) || [];
 
@@ -52,6 +57,19 @@ function Todo() {
   const deleteTodo = async (id) => {
     await axios.delete(`http://localhost:5000/todos/${id}`);
     setTodos(todos.filter((todo) => todo._id !== id));
+  };
+
+  const toggleTodo = async (id) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo._id === id) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+
+    const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
+    await axios.put(`http://localhost:5000/todos/${id}`, todoToUpdate);
   };
 
   return (
@@ -79,11 +97,11 @@ function Todo() {
           </button>
         </div>
         <button
-          className="flex contents-center items-center gap-2 border p-2 rounded"
+          className="flex contents-center items-center gap-2 border-2 p-1 rounded-full absolute top-7 right-7"
           onClick={toggleDarkMode}>
-          Mode Switch{" "}
+          {" "}
           <svg
-            class="w-6 h-6 text-gray-800 dark:text-[#333]"
+            class="w-4 h-4 text-gray-800 dark:text-[#333]"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -91,7 +109,7 @@ function Todo() {
             <path d="M17.8 13.75a1 1 0 0 0-.859-.5A7.488 7.488 0 0 1 10.52 2a1 1 0 0 0 0-.969A1.035 1.035 0 0 0 9.687.5h-.113a9.5 9.5 0 1 0 8.222 14.247 1 1 0 0 0 .004-.997Z" />
           </svg>
           <svg
-            class="w-6 h-6 text-gray-800 dark:text-white"
+            class="w-4 h-4 text-gray-800 dark:text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -116,9 +134,17 @@ function Todo() {
           </button>
           <div>
             {todos.map((todo) => (
-              <div className="flex justify-between items-center border p-3 mb-3 rounded hover:bg-red-400 cursor-pointer text-lg font-semibold">
+              <div
+                className={`flex justify-between items-center border p-3 mb-3 rounded hover:bg-red-400 cursor-pointer text-lg font-semibold ${
+                  todo.completed ? "line-through" : ""
+                }`}
+                onClick={() => toggleTodo(todo._id)}>
                 <p key={todo._id}>{todo.task}</p>
-                <button onClick={() => deleteTodo(todo._id)}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteTodo(todo._id);
+                  }}>
                   <svg
                     class="w-6 h-6 text-gray-800 hover:text-white dark:text-red-700"
                     aria-hidden="true"
