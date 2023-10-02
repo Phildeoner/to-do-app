@@ -26,7 +26,7 @@ function Todo() {
         password,
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         alert("User successfully created!");
       } else if (
         response.data &&
