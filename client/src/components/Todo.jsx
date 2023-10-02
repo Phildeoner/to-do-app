@@ -8,6 +8,15 @@ function Todo() {
 
   const [darkMode, setDarkMode] = useState(false);
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const register = async () => {
+    await axios.post("http://localhost:5000/register", { username, password });
+    setUsername("");
+    setPassword("");
+  };
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
@@ -30,18 +39,50 @@ function Todo() {
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <h1 className="text-4xl font-bold text-center p-5">Todo Application</h1>
-      <div className="flex flex-col contents-center items-center">
+      <div className="flex items-center justify-between p-5 gap-5">
+        <div>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            className="border p-2 mr-2 shadow-md rounded"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="border p-2 mr-2 shadow-md rounded"
+          />
+          <button
+            className="border p-2 px-10 ml-2 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold rounded"
+            onClick={register}>
+            Register
+          </button>
+        </div>
         <button
           className="flex contents-center items-center gap-2 border p-2 rounded"
           onClick={toggleDarkMode}>
           Mode Switch{" "}
           <svg
+            class="w-6 h-6 text-gray-800 dark:text-[#333]"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
-            height="1em"
-            viewBox="0 0 512 512">
-            <path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z" />
+            fill="currentColor"
+            viewBox="0 0 18 20">
+            <path d="M17.8 13.75a1 1 0 0 0-.859-.5A7.488 7.488 0 0 1 10.52 2a1 1 0 0 0 0-.969A1.035 1.035 0 0 0 9.687.5h-.113a9.5 9.5 0 1 0 8.222 14.247 1 1 0 0 0 .004-.997Z" />
+          </svg>
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20">
+            <path d="M10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-11a1 1 0 0 0 1-1V1a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1Zm0 12a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1ZM4.343 5.757a1 1 0 0 0 1.414-1.414L4.343 2.929a1 1 0 0 0-1.414 1.414l1.414 1.414Zm11.314 8.486a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM4 10a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1Zm15-1h-2a1 1 0 1 0 0 2h2a1 1 0 0 0 0-2ZM4.343 14.243l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414a1 1 0 0 0-1.414-1.414ZM14.95 6.05a1 1 0 0 0 .707-.293l1.414-1.414a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 .707 1.707Z" />
           </svg>
         </button>
+      </div>
+      <div className="flex flex-col contents-center items-center">
         <div>
           <input
             className="border w-[65vw] sm:w-[60vw] md:w-[35vw] h-12 my-10 shadow-md px-3"
