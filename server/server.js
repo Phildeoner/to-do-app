@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = 5000;
@@ -36,4 +38,44 @@ app.post("/todos", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+const UserSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+});
+
+UserSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+
+const User = mongoose.model("User", UserSchema);
+
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+  const user = new User({ username, password });
+  await user.save();
+  res.json({ message: "User registered successfully!" });
+});
+
+const TodoSchema = new mongoose.Schema({
+  task: String,
+  completed: Boolean,
+  tags: [String], // for tagging users
+  hashtags: [String], // for hashtags
+});
+
+app.get("/search", async (req, res) => {
+  const { query } = req.query;
+
+  // Search for users
+  const users = await User.find({ username: new RegExp(query, "i") });
+
+  // Search for todos with hashtags
+  const todos = await Todo.find({ hashtags: new RegExp(query, "i") });
+
+  res.json({ users, todos });
 });
