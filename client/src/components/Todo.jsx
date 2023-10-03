@@ -60,7 +60,9 @@ function Todo() {
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
-      <h1 className="text-4xl font-bold text-center p-5">Todo Application</h1>
+      <h1 className="text-2xl md:text-4xl font-bold text-center p-5">
+        Todo Application
+      </h1>
 
       <button
         className="flex contents-center items-center gap-2 border-2 p-1 rounded-full absolute top-7 right-7"
@@ -100,7 +102,7 @@ function Todo() {
               onClick={addTodo}>
               Add
             </button>
-            <div>
+            <div className="mb-20 md:mb-10">
               {todos.length === 0 ? (
                 <p className="font-bold text-2xl">No todo list added</p>
               ) : (
