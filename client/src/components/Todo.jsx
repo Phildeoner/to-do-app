@@ -89,7 +89,7 @@ function Todo() {
 
   const search = async () => {
     if (searchQuery.trim() === "") {
-      toast.warning("Please enter a search query!");
+      toast.error("Please enter a search query!");
       return;
     }
 
@@ -97,7 +97,13 @@ function Todo() {
       `http://localhost:5000/search?query=${searchQuery}`
     );
     setSearchResults(response.data);
-    setSearched(true); // Set searched to true after getting results
+    setSearched(true);
+
+    // Set a timeout to clear the search results after 5 seconds
+    setTimeout(() => {
+      setSearchResults({ users: [], todos: [] });
+      setSearched(false);
+    }, 10000);
   };
 
   const deleteTodo = async (id) => {
