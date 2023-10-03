@@ -89,7 +89,7 @@ function Todo() {
 
   const search = async () => {
     if (searchQuery.trim() === "") {
-      toast.error("Please enter a search query!");
+      toast.warning("Please enter a search query!");
       return;
     }
 
@@ -104,6 +104,12 @@ function Todo() {
       setSearchResults({ users: [], todos: [] });
       setSearched(false);
     }, 10000);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      search();
+    }
   };
 
   const deleteTodo = async (id) => {
@@ -155,8 +161,9 @@ function Todo() {
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Search..."
-            className="border w-[65vw] sm:w-[60vw] md:w-[35vw] h-10 mt-7 mb-3 shadow-md px-3 rounded-full"
+            className="border w-[65vw] sm:w-[60vw] md:w-[35vw] h-10 mt-7 mb-3 text-gray-600 shadow-md px-3 rounded-full"
           />
           <button className="-ml-10 mt-4" onClick={search}>
             <svg
@@ -197,7 +204,7 @@ function Todo() {
         <div className="flex flex-col contents-center items-center w-[70vw]">
           <div>
             <input
-              className="border w-[65vw] sm:w-[60vw] md:w-[35vw] h-12 my-7 shadow-md px-3"
+              className="border w-[65vw] sm:w-[60vw] text-gray-600 md:w-[35vw] h-12 my-7 shadow-md px-3"
               placeholder="Add a new todo"
               value={task}
               onChange={(e) => setTask(e.target.value)}
@@ -256,15 +263,15 @@ function Todo() {
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-            className="border p-2 mb-5 shadow-md rounded"
+            placeholder="@Username"
+            className="border text-gray-600 p-2 mb-5 shadow-md rounded"
           />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="border p-2 mb-5 shadow-md rounded"
+            className="border text-gray-600 p-2 mb-5 shadow-md rounded"
           />
           <button
             className="border p-2 px-10 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold rounded"
