@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function Signin() {
   const [username, setUsername] = useState("");
@@ -9,6 +10,12 @@ function Signin() {
   const register = async () => {
     if (!username.trim() || !password.trim()) {
       toast.warning("Both username and password are required!");
+      return;
+    }
+
+    // Check if username starts with '@'
+    if (username.trim()[0] !== "@") {
+      toast.warning("Username must start with '@'!");
       return;
     }
 
