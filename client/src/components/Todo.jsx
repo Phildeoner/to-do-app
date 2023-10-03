@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Todo() {
   const [todos, setTodos] = useState([]);
@@ -18,7 +20,7 @@ function Todo() {
 
   const register = async () => {
     if (!username.trim() || !password.trim()) {
-      alert("Both username and password are required!");
+      toast.warning("Both username and password are required!");
       return;
     }
 
@@ -29,14 +31,16 @@ function Todo() {
       });
 
       if (response.status === 200) {
-        alert("User successfully created!");
+        toast.success("User successfully created!");
       } else if (
         response.data &&
         response.data.error === "Username already exists"
       ) {
-        alert("Username already exists. Please choose a different username.");
+        toast.warning(
+          "Username already exists. Please choose a different username."
+        );
       } else {
-        alert("Error creating user. Please try again.");
+        toast.error("Error creating user. Please try again.");
       }
 
       setUsername("");
@@ -47,9 +51,11 @@ function Todo() {
         error.response.data &&
         error.response.data.error === "Username already exists"
       ) {
-        alert("Username already exists. Please choose a different username.");
+        toast.warning(
+          "Username already exists. Please choose a different username."
+        );
       } else {
-        alert("Error creating user. Please try again.");
+        toast.error("Error creating user. Please try again.");
       }
     }
   };
@@ -68,7 +74,7 @@ function Todo() {
 
   const addTodo = async () => {
     if (task.trim() === "") {
-      alert("Please enter a valid todo!");
+      toast.warning("Please enter a valid todo!");
       return;
     }
 
@@ -83,7 +89,7 @@ function Todo() {
 
   const search = async () => {
     if (searchQuery.trim() === "") {
-      alert("Please enter a search query!");
+      toast.warning("Please enter a search query!");
       return;
     }
 
@@ -114,6 +120,7 @@ function Todo() {
 
   return (
     <div className={darkMode ? "dark-mode" : ""}>
+      <ToastContainer />
       <h1 className="text-4xl font-bold text-center p-5">Todo Application</h1>
 
       <button
