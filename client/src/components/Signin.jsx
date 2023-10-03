@@ -57,7 +57,7 @@ function Signin() {
 
   return (
     <>
-      <div className="w-[25vw] mt-7 flex flex-col bg-slate-600 p-10 rounded-md shadow-md">
+      <div className="w-full md:w-[25vw] mt-7 flex flex-col bg-slate-600 p-10 rounded-md shadow-md">
         <h1 className="font-bold text-2xl text-center mb-5">
           Create An Account
         </h1>
