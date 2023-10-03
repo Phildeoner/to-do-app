@@ -13,6 +13,12 @@ function Signin() {
       return;
     }
 
+    // Check if username starts with '@'
+    if (username.trim()[0] !== "@") {
+      toast.warning("Username must start with '@'!");
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:5000/register", {
         username,
