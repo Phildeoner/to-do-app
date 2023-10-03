@@ -85,7 +85,7 @@ function Todo() {
       </button>
       <Search />
 
-      <div className="flex flex-col-reverse content-center items-center md:flex-row px-4 md:px-1">
+      <div className="flex flex-col-reverse content-center md:flex-row px-4 md:px-1">
         <div className="flex flex-col content-center items-center w-full sm:w-[70vw]">
           <div className="whitespace-nowrap">
             <input
