@@ -95,7 +95,6 @@ function Todo() {
               placeholder="Add a new todo"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              required
             />
             <button
               className="h-12 border px-10 ml-2 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold"

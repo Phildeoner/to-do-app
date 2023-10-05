@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 const app = express();
 const PORT = 5000;
@@ -96,4 +97,37 @@ app.get("/search", async (req, res) => {
   const todos = await Todo.find({ hashtags: new RegExp(query, "i") });
 
   res.json({ users, todos });
+});
+
+app.post("/create-todo", async (req, res) => {
+  const { userInput } = req.body;
+
+  try {
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant that creates to-do lists.",
+          },
+          { role: "user", content: userInput },
+        ],
+        temperature: 0.7,
+        max_tokens: 100,
+      },
+      {
+        headers: {
+          Authorization: `Bearer YOUR_OPENAI_API_KEY`,
+        },
+      }
+    );
+
+    const aiMessage = response.data.choices[0].message.content.trim();
+    const todos = aiMessage.split("\n").filter((item) => item); // Split by line and filter out empty strings
+    res.json({ todos });
+  } catch (error) {
+    res.status(500).json({ error: "Error creating to-do list" });
+  }
 });
