@@ -1,10 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
-require("dotenv").config();
+const apiKey = process.env.OPENAI_API_KEY;
 
 const app = express();
 const PORT = 5000;
@@ -120,7 +121,7 @@ app.post("/create-todo", async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${apiKey}`,
         },
       }
     );
