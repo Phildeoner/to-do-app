@@ -5,16 +5,33 @@ function AiGenerate() {
   const [userInput, setUserInput] = useState("");
   const [aiTodos, setAiTodos] = useState([]);
 
+  const saveTodoToServer = async (todo) => {
+    try {
+      await axios.post("http://localhost:5000/todos", {
+        task: todo,
+        completed: false,
+      });
+    } catch (error) {
+      console.error("Error saving to-do to the server:", error);
+    }
+  };
+
   const createTodoList = async () => {
     try {
       const response = await axios.post("http://localhost:5000/create-todo", {
         userInput,
       });
       setAiTodos(response.data.todos);
+
+      // Save each AI-generated to-do to the server
+      for (let todo of response.data.todos) {
+        await saveTodoToServer(todo);
+      }
     } catch (error) {
       console.error("Error creating to-do list:", error);
     }
   };
+
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-3">
