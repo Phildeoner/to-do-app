@@ -4,6 +4,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+require("dotenv").config();
 
 const app = express();
 const PORT = 5000;
@@ -119,7 +120,7 @@ app.post("/create-todo", async (req, res) => {
       },
       {
         headers: {
-          Authorization: `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`,
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
       }
     );
@@ -128,6 +129,10 @@ app.post("/create-todo", async (req, res) => {
     const todos = aiMessage.split("\n").filter((item) => item); // Split by line and filter out empty strings
     res.json({ todos });
   } catch (error) {
+    console.error(
+      "Detailed Error:",
+      error.response ? error.response.data : error.message
+    );
     res.status(500).json({ error: "Error creating to-do list" });
   }
 });

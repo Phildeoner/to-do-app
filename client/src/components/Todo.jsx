@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Search from "./Search";
 import Signin from "./Signin";
+import AiGenerate from "./AiGenerate";
 
 function Todo() {
   const [todos, setTodos] = useState([]);
@@ -137,6 +138,7 @@ function Todo() {
               )}
             </div>
           </div>
+          <AiGenerate />
         </div>
         <Signin />
       </div>
