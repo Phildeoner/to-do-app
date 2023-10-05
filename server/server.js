@@ -119,7 +119,7 @@ app.post("/create-todo", async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer YOUR_OPENAI_API_KEY`,
+          Authorization: `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`,
         },
       }
     );
