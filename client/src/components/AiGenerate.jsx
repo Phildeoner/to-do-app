@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function AiGenerate() {
+function AiGenerate({ onTodoAdded }) {
   const [userInput, setUserInput] = useState("");
   const [aiTodos, setAiTodos] = useState([]);
 
   const saveTodoToServer = async (todo) => {
     try {
-      await axios.post("http://localhost:5000/todos", {
+      const response = await axios.post("http://localhost:5000/todos", {
         task: todo,
         completed: false,
       });
+      onTodoAdded(response.data); // Update the main Todo list
     } catch (error) {
       console.error("Error saving to-do to the server:", error);
     }
@@ -46,11 +47,6 @@ function AiGenerate() {
           onClick={createTodoList}>
           Generate To-Do List
         </button>
-        <div>
-          {aiTodos.map((todo, index) => (
-            <p key={index}>{todo}</p>
-          ))}
-        </div>
       </div>
     </>
   );

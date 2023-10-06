@@ -58,6 +58,10 @@ function Todo() {
     await axios.put(`http://localhost:5000/todos/${id}`, todoToUpdate);
   };
 
+  const addGeneratedTodo = (newTodo) => {
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
+
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
@@ -144,7 +148,7 @@ function Todo() {
               )}
             </div>
           </div>
-          <AiGenerate />
+          <AiGenerate onTodoAdded={addGeneratedTodo} />
         </div>
         <Signin />
       </div>
