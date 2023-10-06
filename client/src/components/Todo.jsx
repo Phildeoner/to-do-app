@@ -64,7 +64,7 @@ function Todo() {
 
   const clearTodos = async () => {
     try {
-      await axios.delete("http://localhost:5000/todos/clear");
+      await axios.delete("http://localhost:5000/todos");
       setTodos([]);
     } catch (error) {
       console.error("Error clearing todos:", error);

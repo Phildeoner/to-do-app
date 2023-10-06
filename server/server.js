@@ -144,7 +144,7 @@ app.post("/create-todo", async (req, res) => {
   }
 });
 
-app.delete("/todos/clear", async (req, res) => {
+app.delete("/todos", async (req, res) => {
   try {
     await Todo.deleteMany({});
     res.status(200).send("All todos cleared");
