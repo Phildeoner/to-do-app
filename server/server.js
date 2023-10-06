@@ -127,8 +127,13 @@ app.post("/create-todo", async (req, res) => {
       }
     );
 
-    const aiMessage = response.data.choices[0].message.content.trim();
-    const todos = aiMessage.split("\n").filter((item) => item); // Split by line and filter out empty strings
+    let aiMessage = response.data.choices[0].message.content.trim();
+    aiMessage = aiMessage.split("\n").slice(1).join("\n"); // Remove the first line
+    const todos = aiMessage
+      .split("\n")
+      .filter((item) => item && item.length >= 5) // Filter out lines with length less than 5 characters
+      .map((item) => item.replace(/^\d+\.\s*/, "")); // Remove numbering at the start of each line
+
     res.json({ todos });
   } catch (error) {
     console.error(
