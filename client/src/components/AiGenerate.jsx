@@ -35,7 +35,7 @@ function AiGenerate({ onTodoAdded }) {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-3">
+      <div className="flex flex-col justify-center items-center gap-3 mb-10">
         <textarea
           rows="4"
           class="block p-2.5 w-[80vw] md:w-[40vw] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  "
