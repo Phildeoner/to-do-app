@@ -143,3 +143,13 @@ app.post("/create-todo", async (req, res) => {
     res.status(500).json({ error: "Error creating to-do list" });
   }
 });
+
+app.delete("/todos/clear", async (req, res) => {
+  try {
+    await Todo.deleteMany({});
+    res.status(200).send("All todos cleared");
+  } catch (error) {
+    console.error("Error clearing todos:", error);
+    res.status(500).send("Error clearing todos");
+  }
+});

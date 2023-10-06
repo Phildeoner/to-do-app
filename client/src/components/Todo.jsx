@@ -62,10 +62,19 @@ function Todo() {
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
+  const clearTodos = async () => {
+    try {
+      await axios.delete("http://localhost:5000/todos/clear");
+      setTodos([]);
+    } catch (error) {
+      console.error("Error clearing todos:", error);
+    }
+  };
+
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
-      <h1 className="text-2xl md:text-4xl font-bold text-center p-5">
+      <h1 className="text-2xl md:text-4xl shadow-md font-bold text-center p-5">
         Todo Assistant
       </h1>
 
@@ -106,7 +115,7 @@ function Todo() {
               onClick={addTodo}>
               Add
             </button>
-            <div className="mb-20 md:mb-10">
+            <div className="mb-5">
               {todos.length === 0 ? (
                 <p className="font-semibold md:font-bold text-lg md:text-xl">
                   No todo list added
@@ -147,7 +156,17 @@ function Todo() {
                 ))
               )}
             </div>
+            <div className="mb-10">
+              {todos.length > 0 && (
+                <button
+                  className="h-10 border rounded px-10 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold"
+                  onClick={clearTodos}>
+                  Clear All
+                </button>
+              )}
+            </div>
           </div>
+
           <AiGenerate onTodoAdded={addGeneratedTodo} />
         </div>
         <Signin />
