@@ -114,12 +114,12 @@ function Todo() {
               ) : (
                 todos.map((todo) => (
                   <div
-                    className={`flex justify-between items-center border p-3 mb-3 rounded hover:bg-red-400 cursor-pointer text-lg font-semibold ${
+                    className={`flex justify-between items-center border p-3 mb-3 relative md:max-w-[45vw] rounded hover:bg-red-400 cursor-pointer text-lg font-semibold ${
                       todo.completed ? "line-through" : ""
                     }`}
                     onClick={() => toggleTodo(todo._id)}>
                     <p
-                      className="font-semibold md:font-bold text-lg md:text-xl"
+                      className="font-semibold text-lg md:text-xl whitespace-pre-wrap "
                       key={todo._id}>
                       {todo.task}
                     </p>
