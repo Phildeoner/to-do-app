@@ -47,7 +47,7 @@ function Search() {
           />
           <button className="absolute bottom-5 right-3" onClick={search}>
             <svg
-              class="w-6 h-6 text-white dark:text-gray-800"
+              className="w-6 h-6 text-gray-800 dark:text-gray-800"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
