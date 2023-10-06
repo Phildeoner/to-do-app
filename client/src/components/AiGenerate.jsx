@@ -46,11 +46,11 @@ function AiGenerate() {
           onClick={createTodoList}>
           Generate To-Do List
         </button>
-        <ul>
+        <div>
           {aiTodos.map((todo, index) => (
-            <li key={index}>{todo}</li>
+            <p key={index}>{todo}</p>
           ))}
-        </ul>
+        </div>
       </div>
     </>
   );

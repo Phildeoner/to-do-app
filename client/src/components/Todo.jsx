@@ -89,7 +89,7 @@ function Todo() {
       <Search />
 
       <div className="flex flex-col-reverse content-center md:flex-row px-4 md:px-1">
-        <div className="flex flex-col content-center items-center w-full sm:w-[70vw]">
+        <div className="flex flex-col content-center items-center w-full md:w-[70vw]">
           <div className="whitespace-nowrap">
             <input
               className="border w-[65vw] sm:w-[60vw] text-gray-600 md:w-[35vw] h-12 my-7 shadow-md px-3"
@@ -104,7 +104,9 @@ function Todo() {
             </button>
             <div className="mb-20 md:mb-10">
               {todos.length === 0 ? (
-                <p className="font-bold text-2xl">No todo list added</p>
+                <p className="font-semibold md:font-bold text-lg md:text-xl">
+                  No todo list added
+                </p>
               ) : (
                 todos.map((todo) => (
                   <div
@@ -112,7 +114,11 @@ function Todo() {
                       todo.completed ? "line-through" : ""
                     }`}
                     onClick={() => toggleTodo(todo._id)}>
-                    <p key={todo._id}>{todo.task}</p>
+                    <p
+                      className="font-semibold md:font-bold text-lg md:text-xl"
+                      key={todo._id}>
+                      {todo.task}
+                    </p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
