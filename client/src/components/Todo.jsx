@@ -66,7 +66,7 @@ function Todo() {
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
       <h1 className="text-2xl md:text-4xl font-bold text-center p-5">
-        Todo Application
+        Todo Assistant
       </h1>
 
       <button
