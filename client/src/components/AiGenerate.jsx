@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Skeleton from "./Skeleton";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AiGenerate({ onTodoAdded }) {
   const [userInput, setUserInput] = useState("");
@@ -22,12 +24,17 @@ function AiGenerate({ onTodoAdded }) {
   };
 
   const createTodoList = async () => {
+    if (!userInput.trim()) {
+      toast.warning("Please provide a description for your to-do list.");
+      return;
+    }
     setLoading(true);
     try {
       const response = await axios.post("http://localhost:5000/create-todo", {
         userInput,
       });
       setAiTodos(response.data.todos);
+      toast.success("To-Do list created successfully!");
 
       // Save each AI-generated to-do to the server
       for (let todo of response.data.todos) {
@@ -40,6 +47,7 @@ function AiGenerate({ onTodoAdded }) {
 
   return (
     <>
+      <ToastContainer />
       <div className="flex flex-col justify-center items-center gap-3 mb-10">
         {loading ? (
           <Skeleton />
