@@ -62,16 +62,6 @@ function Todo() {
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
-  const clearTodos = async () => {
-    try {
-      // Assuming you have an endpoint to clear all todos
-      await axios.delete("http://localhost:5000/todos/clear");
-      setTodos([]); // Clear the todos in the state
-    } catch (error) {
-      console.error("Error clearing todos:", error);
-    }
-  };
-
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
