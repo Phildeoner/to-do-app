@@ -12,10 +12,13 @@ const app = express();
 const PORT = 5000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/todoApp", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://phildeoner:Chemistry0419@cluster0.nklsaik.mongodb.net/?authSource=Cluster0&authMechanism=SCRAM-SHA-1",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 app.use(cors());
 app.use(express.json());
