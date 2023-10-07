@@ -1,17 +1,24 @@
+require("dotenv").config({ path: "../.env" });
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
+const apiKey = process.env.OPENAI_API_KEY;
 
 const app = express();
 const PORT = 5000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/todoApp", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://phildeoner:Chemistry0419@cluster0.nklsaik.mongodb.net/?authSource=Cluster0&authMechanism=SCRAM-SHA-1",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 app.use(cors());
 app.use(express.json());
@@ -96,4 +103,56 @@ app.get("/search", async (req, res) => {
   const todos = await Todo.find({ hashtags: new RegExp(query, "i") });
 
   res.json({ users, todos });
+});
+
+app.post("/create-todo", async (req, res) => {
+  const { userInput } = req.body;
+
+  try {
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant that creates to-do lists.",
+          },
+          { role: "user", content: userInput },
+        ],
+        temperature: 0.7,
+        max_tokens: 100,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }
+    );
+
+    let aiMessage = response.data.choices[0].message.content.trim();
+    aiMessage = aiMessage.split("\n").slice(1).join("\n"); // Remove the first line
+    const todos = aiMessage
+      .split("\n")
+      .filter((item) => item && item.length >= 5) // Filter out lines with length less than 5 characters
+      .map((item) => item.replace(/^\d+\.\s*/, "")); // Remove numbering at the start of each line
+
+    res.json({ todos });
+  } catch (error) {
+    console.error(
+      "Detailed Error:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Error creating to-do list" });
+  }
+});
+
+app.delete("/todos", async (req, res) => {
+  try {
+    await Todo.deleteMany({});
+    res.status(200).send("All todos cleared");
+  } catch (error) {
+    console.error("Error clearing todos:", error);
+    res.status(500).send("Error clearing todos");
+  }
 });

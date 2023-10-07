@@ -57,32 +57,34 @@ function Signin() {
 
   return (
     <>
-      <div className="w-[25vw] mt-7 flex flex-col bg-slate-600 p-10 rounded-md shadow-md">
-        <h1 className="font-bold text-2xl text-center mb-5">
-          Create An Account
-        </h1>
-        <p className="mb-5 text-justify text-base text-white">
-          Create an account to be able to search for other users and tag them to
-          your own list of todo.
-        </p>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="@Username"
-          className="border text-gray-600 p-2 mb-5 shadow-md rounded"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          className="border text-gray-600 p-2 mb-5 shadow-md rounded"
-        />
-        <button
-          className="border p-2 px-10 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold rounded"
-          onClick={register}>
-          Register
-        </button>
+      <div>
+        <div className="w-full md:w-[25vw] mt-7 flex flex-col bg-slate-600 p-10 rounded-md shadow-md">
+          <h1 className="font-bold text-2xl text-center mb-5">
+            Create An Account
+          </h1>
+          <p className="mb-5 text-justify text-base text-white">
+            Create an account to be able to search for other users and tag them
+            to your own list of todo.
+          </p>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="@Username"
+            className="border text-gray-600 p-2 mb-5 shadow-md rounded"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="border text-gray-600 p-2 mb-5 shadow-md rounded"
+          />
+          <button
+            className="border p-2 px-10 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold rounded"
+            onClick={register}>
+            Register
+          </button>
+        </div>
       </div>
     </>
   );

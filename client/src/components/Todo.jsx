@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Search from "./Search";
 import Signin from "./Signin";
+import AiGenerate from "./AiGenerate";
 
 function Todo() {
   const [todos, setTodos] = useState([]);
@@ -57,17 +58,33 @@ function Todo() {
     await axios.put(`http://localhost:5000/todos/${id}`, todoToUpdate);
   };
 
+  const addGeneratedTodo = (newTodo) => {
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
+
+  const clearTodos = async () => {
+    try {
+      await axios.delete("http://localhost:5000/todos");
+      setTodos([]);
+      toast.success("Todo List Successfully Cleared!");
+    } catch (error) {
+      console.error("Error clearing todos:", error);
+    }
+  };
+
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
-      <h1 className="text-4xl font-bold text-center p-5">Todo Application</h1>
+      <h1 className="text-2xl md:text-4xl shadow-md font-bold text-center p-5">
+        Todo Assistant
+      </h1>
 
       <button
         className="flex contents-center items-center gap-2 border-2 p-1 rounded-full absolute top-7 right-7"
         onClick={toggleDarkMode}>
         {" "}
         <svg
-          class="w-4 h-4 text-gray-800 dark:text-[#333]"
+          className="w-4 h-4 text-gray-800 dark:text-[#333]"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -75,7 +92,7 @@ function Todo() {
           <path d="M17.8 13.75a1 1 0 0 0-.859-.5A7.488 7.488 0 0 1 10.52 2a1 1 0 0 0 0-.969A1.035 1.035 0 0 0 9.687.5h-.113a9.5 9.5 0 1 0 8.222 14.247 1 1 0 0 0 .004-.997Z" />
         </svg>
         <svg
-          class="w-4 h-4 text-gray-800 dark:text-white"
+          className="w-4 h-4 text-white dark:text-white"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -85,39 +102,44 @@ function Todo() {
       </button>
       <Search />
 
-      <div className="flex">
-        <div className="flex flex-col contents-center items-center w-[70vw]">
-          <div>
+      <div className="flex flex-col-reverse content-center md:flex-row px-4 md:px-1">
+        <div className="flex flex-col content-center items-center w-full md:w-[70vw]">
+          <div className="whitespace-nowrap">
             <input
               className="border w-[65vw] sm:w-[60vw] text-gray-600 md:w-[35vw] h-12 my-7 shadow-md px-3"
               placeholder="Add a new todo"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              required
             />
             <button
               className="h-12 border px-10 ml-2 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold"
               onClick={addTodo}>
               Add
             </button>
-            <div>
+            <div className="mb-5">
               {todos.length === 0 ? (
-                <p className="font-bold text-2xl">No todo list added</p>
+                <p className="font-semibold md:font-bold text-lg md:text-xl">
+                  No todo list added
+                </p>
               ) : (
                 todos.map((todo) => (
                   <div
-                    className={`flex justify-between items-center border p-3 mb-3 rounded hover:bg-red-400 cursor-pointer text-lg font-semibold ${
+                    className={`flex justify-between items-center border p-3 mb-3 relative md:max-w-[45vw] rounded hover:bg-red-400 cursor-pointer text-lg font-semibold ${
                       todo.completed ? "line-through" : ""
                     }`}
                     onClick={() => toggleTodo(todo._id)}>
-                    <p key={todo._id}>{todo.task}</p>
+                    <p
+                      className="font-semibold text-lg md:text-xl whitespace-pre-wrap "
+                      key={todo._id}>
+                      {todo.task}
+                    </p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteTodo(todo._id);
                       }}>
                       <svg
-                        class="w-6 h-6 text-gray-800 hover:text-white dark:text-red-700"
+                        className="w-6 h-6 text-red-700 hover:text-white dark:text-red-700"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -135,7 +157,18 @@ function Todo() {
                 ))
               )}
             </div>
+            <div className="mb-10">
+              {todos.length > 0 && (
+                <button
+                  className="h-10 border rounded px-10 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold"
+                  onClick={clearTodos}>
+                  Clear All
+                </button>
+              )}
+            </div>
           </div>
+
+          <AiGenerate onTodoAdded={addGeneratedTodo} />
         </div>
         <Signin />
       </div>
