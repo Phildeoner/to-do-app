@@ -89,14 +89,16 @@ function Todo() {
 
       <div className="flex flex-col-reverse content-center md:flex-row px-4 md:px-1">
         <div className="flex flex-col content-center items-center w-full md:w-[70vw]">
-          <TodoControls task={task} setTask={setTask} addTodo={addTodo} />
-          <TodoList
-            todos={todos}
-            toggleTodo={toggleTodo}
-            deleteTodo={deleteTodo}
-          />
-          <ClearTodo clearTodos={clearTodos} todos={todos} />
-          <AiGenerate onTodoAdded={addGeneratedTodo} />
+          <div>
+            <TodoControls task={task} setTask={setTask} addTodo={addTodo} />
+            <TodoList
+              todos={todos}
+              toggleTodo={toggleTodo}
+              deleteTodo={deleteTodo}
+            />
+            <ClearTodo clearTodos={clearTodos} todos={todos} />
+            <AiGenerate onTodoAdded={addGeneratedTodo} />
+          </div>
         </div>
         <Signin />
       </div>
