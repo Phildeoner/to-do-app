@@ -9,6 +9,7 @@ import AiGenerate from "./AiGenerate";
 import TodoList from "./TodoList";
 import TodoControls from "./TodoControls";
 import TopBar from "./TopBar";
+import ClearTodo from "./ClearTodo";
 
 function Todo() {
   const [todos, setTodos] = useState([]);
@@ -22,8 +23,13 @@ function Todo() {
 
   useEffect(() => {
     async function fetchTodos() {
-      const response = await axios.get("http://localhost:5000/todos");
-      setTodos(response.data);
+      try {
+        const response = await axios.get("http://localhost:5000/todos");
+        setTodos(response.data);
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+        toast.error("Failed to fetch todos!");
+      }
     }
     fetchTodos();
   }, []);
@@ -83,17 +89,13 @@ function Todo() {
 
       <div className="flex flex-col-reverse content-center md:flex-row px-4 md:px-1">
         <div className="flex flex-col content-center items-center w-full md:w-[70vw]">
-          <TodoControls
-            task={task}
-            setTask={setTask}
-            addTodo={addTodo}
-            clearTodos={clearTodos}
-          />
+          <TodoControls task={task} setTask={setTask} addTodo={addTodo} />
           <TodoList
             todos={todos}
             toggleTodo={toggleTodo}
             deleteTodo={deleteTodo}
           />
+          <ClearTodo clearTodos={clearTodos} todos={todos} />
           <AiGenerate onTodoAdded={addGeneratedTodo} />
         </div>
         <Signin />

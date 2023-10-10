@@ -1,6 +1,6 @@
 import React from "react";
 
-function TodoControls({ task, setTask, addTodo, clearTodos }) {
+function TodoControls({ task, setTask, addTodo }) {
   return (
     <div className="whitespace-nowrap">
       <input
@@ -14,16 +14,6 @@ function TodoControls({ task, setTask, addTodo, clearTodos }) {
         onClick={addTodo}>
         Add
       </button>
-
-      <div className="mb-10">
-        {todos.length > 0 && (
-          <button
-            className="h-10 border rounded px-10 shadow-md bg-red-500 hover:bg-red-600 text-white font-bold"
-            onClick={clearTodos}>
-            Clear All
-          </button>
-        )}
-      </div>
     </div>
   );
 }
