@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Search from "./Search";
 import Signin from "./Signin";
 import AiGenerate from "./AiGenerate";
+import TodoList from "./TodoList";
+import TodoControls from "./TodoControls";
+import TopBar from "./TopBar";
 
 function Todo() {
   const [todos, setTodos] = useState([]);
@@ -75,11 +78,22 @@ function Todo() {
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <ToastContainer />
-
+      <TopBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <Search />
 
       <div className="flex flex-col-reverse content-center md:flex-row px-4 md:px-1">
         <div className="flex flex-col content-center items-center w-full md:w-[70vw]">
+          <TodoControls
+            task={task}
+            setTask={setTask}
+            addTodo={addTodo}
+            clearTodos={clearTodos}
+          />
+          <TodoList
+            todos={todos}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+          />
           <AiGenerate onTodoAdded={addGeneratedTodo} />
         </div>
         <Signin />

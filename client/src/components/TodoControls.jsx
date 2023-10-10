@@ -1,6 +1,6 @@
 import React from "react";
 
-function TodoControls({ task, setTask, addTodo }) {
+function TodoControls({ task, setTask, addTodo, clearTodos }) {
   return (
     <div className="whitespace-nowrap">
       <input
