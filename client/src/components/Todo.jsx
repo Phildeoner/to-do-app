@@ -37,26 +37,38 @@ function Todo() {
   }, []);
 
   const addTodo = async () => {
-    if (task.trim() === "") {
-      toast.warning("Please enter a valid todo!");
-      return;
+    try {
+      if (task.trim() === "") {
+        toast.warning("Please enter a valid todo!");
+        return;
+      }
+
+      const tags = task.match(/@\w+/g) || [];
+      const hashtags = task.match(/#\w+/g) || [];
+
+      const newTodo = { task, completed: false, tags, hashtags };
+      const response = await axios.post(
+        "https://todo-assistant-2kb0.onrender.com/todos",
+        newTodo
+      );
+      setTodos([...todos, response.data]);
+      setTask("");
+    } catch (error) {
+      console.error("Error adding todo:", error);
+      toast.error("Failed to add todo!");
     }
-
-    const tags = task.match(/@\w+/g) || [];
-    const hashtags = task.match(/#\w+/g) || [];
-
-    const newTodo = { task, completed: false, tags, hashtags };
-    const response = await axios.post(
-      "https://todo-assistant-2kb0.onrender.com/todos",
-      newTodo
-    );
-    setTodos([...todos, response.data]);
-    setTask("");
   };
 
   const deleteTodo = async (id) => {
-    await axios.delete(`https://todo-assistant-2kb0.onrender.com/todos/${id}`);
-    setTodos(todos.filter((todo) => todo._id !== id));
+    try {
+      await axios.delete(
+        `https://todo-assistant-2kb0.onrender.com/todos/${id}`
+      );
+      setTodos(todos.filter((todo) => todo._id !== id));
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+      toast.error("Failed to delete todo!");
+    }
   };
 
   const toggleTodo = async (id) => {
