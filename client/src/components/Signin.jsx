@@ -6,6 +6,18 @@ import axios from "axios";
 function Signin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const registerUser = async (username, password) => {
+    const response = await axios.post(
+      "https://todo-assistant-2kb0.onrender.com/register",
+      {
+        username,
+        password,
+      }
+    );
+    return response;
+  };
 
   const register = async () => {
     if (!username.trim() || !password.trim()) {
@@ -13,20 +25,15 @@ function Signin() {
       return;
     }
 
-    // Check if username starts with '@'
     if (username.trim()[0] !== "@") {
       toast.warning("Username must start with '@'!");
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await axios.post(
-        "https://todo-assistant-2kb0.onrender.com/register",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await registerUser(username, password);
 
       if (response.status === 200) {
         toast.success("User successfully created!");
@@ -55,6 +62,8 @@ function Signin() {
       } else {
         toast.error("Error creating user. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 

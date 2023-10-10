@@ -32,6 +32,7 @@ function AiGenerate({ onTodoAdded }) {
       return;
     }
     setLoading(true);
+
     try {
       const response = await axios.post(
         "https://todo-assistant-2kb0.onrender.com/create-todo",
@@ -39,19 +40,22 @@ function AiGenerate({ onTodoAdded }) {
           userInput,
         }
       );
+
       setAiTodos(response.data.todos);
       toast.success("To-Do list created successfully!");
 
-      // Save each AI-generated to-do to the server
-      for (let todo of response.data.todos) {
-        await saveTodoToServer(todo);
-      }
+      // Save each AI-generated to-do to the server concurrently
       const savePromises = response.data.todos.map((todo) =>
         saveTodoToServer(todo)
       );
       await Promise.all(savePromises);
+
+      toast.success("All To-Do items saved successfully!");
     } catch (error) {
       console.error("Error creating to-do list:", error);
+      toast.error("Failed to create to-do list.");
+    } finally {
+      setLoading(false);
     }
   };
 
