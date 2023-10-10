@@ -24,7 +24,9 @@ function Todo() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await axios.get("http://localhost:5000/todos");
+        const response = await axios.get(
+          "https://todo-assistant-2kb0.onrender.com/todos"
+        );
         setTodos(response.data);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -44,13 +46,16 @@ function Todo() {
     const hashtags = task.match(/#\w+/g) || [];
 
     const newTodo = { task, completed: false, tags, hashtags };
-    const response = await axios.post("http://localhost:5000/todos", newTodo);
+    const response = await axios.post(
+      "https://todo-assistant-2kb0.onrender.com/todos",
+      newTodo
+    );
     setTodos([...todos, response.data]);
     setTask("");
   };
 
   const deleteTodo = async (id) => {
-    await axios.delete(`http://localhost:5000/todos/${id}`);
+    await axios.delete(`https://todo-assistant-2kb0.onrender.com/todos/${id}`);
     setTodos(todos.filter((todo) => todo._id !== id));
   };
 
@@ -64,7 +69,10 @@ function Todo() {
     setTodos(updatedTodos);
 
     const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
-    await axios.put(`http://localhost:5000/todos/${id}`, todoToUpdate);
+    await axios.put(
+      `https://todo-assistant-2kb0.onrender.com/todos/${id}`,
+      todoToUpdate
+    );
   };
 
   const addGeneratedTodo = (newTodo) => {
@@ -73,7 +81,7 @@ function Todo() {
 
   const clearTodos = async () => {
     try {
-      await axios.delete("http://localhost:5000/todos");
+      await axios.delete("https://todo-assistant-2kb0.onrender.com/todos");
       setTodos([]);
       toast.success("Todo List Successfully Cleared!");
     } catch (error) {

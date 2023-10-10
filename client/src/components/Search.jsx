@@ -16,7 +16,7 @@ function Search() {
     }
 
     const response = await axios.get(
-      `http://localhost:5000/search?query=${searchQuery}`
+      `https://todo-assistant-2kb0.onrender.com/search?query=${searchQuery}`
     );
     setSearchResults(response.data);
     setSearched(true);

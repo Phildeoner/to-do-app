@@ -11,10 +11,13 @@ function AiGenerate({ onTodoAdded }) {
 
   const saveTodoToServer = async (todo) => {
     try {
-      const response = await axios.post("http://localhost:5000/todos", {
-        task: todo,
-        completed: false,
-      });
+      const response = await axios.post(
+        "https://todo-assistant-2kb0.onrender.com/todos",
+        {
+          task: todo,
+          completed: false,
+        }
+      );
       onTodoAdded(response.data); // Update the main Todo list
     } catch (error) {
       console.error("Error saving to-do to the server:", error);
@@ -30,9 +33,12 @@ function AiGenerate({ onTodoAdded }) {
     }
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/create-todo", {
-        userInput,
-      });
+      const response = await axios.post(
+        "https://todo-assistant-2kb0.onrender.com/create-todo",
+        {
+          userInput,
+        }
+      );
       setAiTodos(response.data.todos);
       toast.success("To-Do list created successfully!");
 
