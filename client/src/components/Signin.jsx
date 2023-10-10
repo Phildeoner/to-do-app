@@ -20,10 +20,13 @@ function Signin() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/register", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "https://todo-assistant-2kb0.onrender.com/register",
+        {
+          username,
+          password,
+        }
+      );
 
       if (response.status === 200) {
         toast.success("User successfully created!");

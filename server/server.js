@@ -35,14 +35,24 @@ const Todo = mongoose.model("Todo", TodoSchema);
 
 // Routes
 app.get("/todos", async (req, res) => {
-  const todos = await Todo.find();
-  res.json(todos);
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (error) {
+    console.error("Error fetching todos:", error);
+    res.status(500).json({ message: "Failed to fetch todos." });
+  }
 });
 
 app.post("/todos", async (req, res) => {
-  const newTodo = new Todo(req.body);
-  await newTodo.save();
-  res.json(newTodo);
+  try {
+    const newTodo = new Todo(req.body);
+    await newTodo.save();
+    res.json(newTodo);
+  } catch (error) {
+    console.error("Error saving todo:", error);
+    res.status(500).json({ message: "Failed to save todo." });
+  }
 });
 
 // Add this route to support delete functionality
@@ -66,43 +76,58 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 10);
+  try {
+    if (this.isModified("password")) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+  } catch (error) {
+    console.error("Error hashing password:", error);
+    next(error); // Passing the error to the next middleware
   }
-  next();
 });
 
 const User = mongoose.model("User", UserSchema);
 
 app.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  // Check if username already exists
-  const existingUser = await User.findOne({ username });
-  if (existingUser) {
-    return res.status(400).json({ error: "Username already exists" });
+    // Check if username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the user with the hashed password
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+
+    res.status(200).json({ message: "User created successfully" });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    res.status(500).json({ error: "Server Error. Failed to register user." });
   }
-
-  // Hash the password before saving
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Create the user with the hashed password
-  const newUser = new User({ username, password: hashedPassword });
-  await newUser.save();
-
-  res.status(200).json({ message: "User created successfully" });
 });
 
 app.get("/search", async (req, res) => {
-  const { query } = req.query;
+  try {
+    const { query } = req.query;
 
-  // Search for users
-  const users = await User.find({ username: new RegExp(query, "i") });
+    // Search for users
+    const users = await User.find({ username: new RegExp(query, "i") });
 
-  // Search for todos with hashtags
-  const todos = await Todo.find({ hashtags: new RegExp(query, "i") });
+    // Search for todos with hashtags
+    const todos = await Todo.find({ hashtags: new RegExp(query, "i") });
 
-  res.json({ users, todos });
+    res.json({ users, todos });
+  } catch (error) {
+    console.error("Error during search:", error);
+    res.status(500).json({ error: "Server Error. Failed to perform search." });
+  }
 });
 
 app.post("/create-todo", async (req, res) => {
