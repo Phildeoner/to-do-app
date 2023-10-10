@@ -15,17 +15,22 @@ function Search() {
       return;
     }
 
-    const response = await axios.get(
-      `https://todo-assistant-2kb0.onrender.com/search?query=${searchQuery}`
-    );
-    setSearchResults(response.data);
-    setSearched(true);
+    try {
+      const response = await axios.get(
+        `https://todo-assistant-2kb0.onrender.com/search?query=${searchQuery}`
+      );
+      setSearchResults(response.data);
+      setSearched(true);
 
-    // Set a timeout to clear the search results after 5 seconds
-    setTimeout(() => {
-      setSearchResults({ users: [], todos: [] });
-      setSearched(false);
-    }, 10000);
+      // Set a timeout to clear the search results after 5 seconds
+      setTimeout(() => {
+        setSearchResults({ users: [], todos: [] });
+        setSearched(false);
+      }, 10000);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      toast.error("Failed to fetch search results. Please try again!");
+    }
   };
 
   const handleKeyDown = (event) => {

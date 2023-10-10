@@ -60,19 +60,25 @@ function Todo() {
   };
 
   const toggleTodo = async (id) => {
-    const updatedTodos = todos.map((todo) => {
-      if (todo._id === id) {
-        return { ...todo, completed: !todo.completed };
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+    try {
+      const updatedTodos = todos.map((todo) => {
+        if (todo._id === id) {
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      });
+      setTodos(updatedTodos);
 
-    const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
-    await axios.put(
-      `https://todo-assistant-2kb0.onrender.com/todos/${id}`,
-      todoToUpdate
-    );
+      const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
+      await axios.put(
+        `https://todo-assistant-2kb0.onrender.com/todos/${id}`,
+        todoToUpdate
+      );
+    } catch (error) {
+      console.error("Error toggling todo:", error);
+      toast.error("Failed to toggle todo!");
+      setTodos(todos); // Revert changes only if there's an error
+    }
   };
 
   const addGeneratedTodo = (newTodo) => {

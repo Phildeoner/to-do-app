@@ -46,6 +46,10 @@ function AiGenerate({ onTodoAdded }) {
       for (let todo of response.data.todos) {
         await saveTodoToServer(todo);
       }
+      const savePromises = response.data.todos.map((todo) =>
+        saveTodoToServer(todo)
+      );
+      await Promise.all(savePromises);
     } catch (error) {
       console.error("Error creating to-do list:", error);
     }
