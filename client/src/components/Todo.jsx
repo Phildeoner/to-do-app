@@ -24,9 +24,7 @@ function Todo() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await axios.get(
-          "https://todo-assistant-2kb0.onrender.com/todos"
-        );
+        const response = await axios.get("http://localhost:5000/todos");
         setTodos(response.data);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -47,10 +45,7 @@ function Todo() {
       const hashtags = task.match(/#\w+/g) || [];
 
       const newTodo = { task, completed: false, tags, hashtags };
-      const response = await axios.post(
-        "https://todo-assistant-2kb0.onrender.com/todos",
-        newTodo
-      );
+      const response = await axios.post("http://localhost:5000/todos", newTodo);
       setTodos([...todos, response.data]);
       setTask("");
     } catch (error) {
@@ -61,9 +56,7 @@ function Todo() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(
-        `https://todo-assistant-2kb0.onrender.com/todos/${id}`
-      );
+      await axios.delete(`http://localhost:5000/todos/${id}`);
       setTodos(todos.filter((todo) => todo._id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
@@ -82,10 +75,7 @@ function Todo() {
       setTodos(updatedTodos);
 
       const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
-      await axios.put(
-        `https://todo-assistant-2kb0.onrender.com/todos/${id}`,
-        todoToUpdate
-      );
+      await axios.put(`http://localhost:5000/todos/${id}`, todoToUpdate);
     } catch (error) {
       console.error("Error toggling todo:", error);
       toast.error("Failed to toggle todo!");
@@ -99,11 +89,11 @@ function Todo() {
 
   const clearTodos = async () => {
     try {
-      await axios.delete("https://todo-assistant-2kb0.onrender.com/todos");
+      await axios.delete("http://localhost:5000/todos");
       setTodos([]);
       toast.success("Todo List Successfully Cleared!");
     } catch (error) {
-      console.error("Error clearing todos:", error);
+      toast.error("Error clearing todos:", error);
     }
   };
 
