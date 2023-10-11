@@ -181,3 +181,26 @@ app.delete("/todos", async (req, res) => {
     res.status(500).send("Error clearing todos");
   }
 });
+
+app.put("/todos/:id", async (req, res) => {
+  try {
+    const todoToUpdate = req.body;
+
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      req.params.id,
+      todoToUpdate,
+      {
+        new: true, // This ensures that the updated document is returned
+      }
+    );
+
+    if (!updatedTodo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    res.json(updatedTodo);
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    res.status(500).json({ message: "Failed to update todo." });
+  }
+});
