@@ -17,7 +17,7 @@ function Search() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/search?query=${searchQuery}`
+        `https://todo-assistant-2kb0.onrender.com/search?query=${searchQuery}`
       );
       setSearchResults(response.data);
       setSearched(true);
@@ -47,7 +47,7 @@ function Search() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search..."
+            placeholder="Search for users using @ and Task using #..."
             className="border w-[65vw] sm:w-[60vw] md:w-[35vw] h-10 mt-7 mb-3 text-gray-600 shadow-md px-3 rounded-full"
           />
           <button className="absolute bottom-5 right-3" onClick={search}>
