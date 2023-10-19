@@ -4,7 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const axios = require("axios");
 const apiKey = process.env.OPENAI_API_KEY;
 
