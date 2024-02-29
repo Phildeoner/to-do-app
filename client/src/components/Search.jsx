@@ -17,7 +17,7 @@ function Search() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/search?query=${searchQuery}`
+        `https://todo-backend-tc9m.onrender.com/search?query=${searchQuery}`
       );
       setSearchResults(response.data);
       setSearched(true);

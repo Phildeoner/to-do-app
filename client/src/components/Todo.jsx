@@ -24,7 +24,9 @@ function Todo() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await axios.get("http://localhost:5000/todos");
+        const response = await axios.get(
+          "https://todo-backend-tc9m.onrender.com/todos"
+        );
         setTodos(response.data);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -45,7 +47,10 @@ function Todo() {
       const hashtags = task.match(/#\w+/g) || [];
 
       const newTodo = { task, completed: false, tags, hashtags };
-      const response = await axios.post("http://localhost:5000/todos", newTodo);
+      const response = await axios.post(
+        "https://todo-backend-tc9m.onrender.com/todos",
+        newTodo
+      );
       setTodos([...todos, response.data]);
       setTask("");
     } catch (error) {
@@ -56,7 +61,7 @@ function Todo() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/todos/${id}`);
+      await axios.delete(`https://todo-backend-tc9m.onrender.com/todos/${id}`);
       setTodos(todos.filter((todo) => todo._id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
@@ -75,7 +80,10 @@ function Todo() {
       setTodos(updatedTodos);
 
       const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
-      await axios.put(`http://localhost:5000/todos/${id}`, todoToUpdate);
+      await axios.put(
+        `https://todo-backend-tc9m.onrender.com/todos/${id}`,
+        todoToUpdate
+      );
     } catch (error) {
       console.error("Error toggling todo:", error);
       toast.error("Failed to toggle todo!");
@@ -89,7 +97,7 @@ function Todo() {
 
   const clearTodos = async () => {
     try {
-      await axios.delete("http://localhost:5000/todos");
+      await axios.delete("https://todo-backend-tc9m.onrender.com/todos");
       setTodos([]);
       toast.success("Todo List Successfully Cleared!");
     } catch (error) {

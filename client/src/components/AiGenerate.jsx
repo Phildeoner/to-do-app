@@ -11,7 +11,7 @@ function AiGenerate({ onTodoAdded }) {
 
   const saveTodoToServer = async (todo) => {
     try {
-      const response = await axios.post("http://localhost:5000/todos", {
+      const response = await axios.post("https://todo-backend-tc9m.onrender.com/todos", {
         task: todo,
         completed: false,
       });
@@ -31,7 +31,7 @@ function AiGenerate({ onTodoAdded }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/create-todo", {
+      const response = await axios.post("https://todo-backend-tc9m.onrender.com/create-todo", {
         userInput,
       });
 
