@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -17,7 +17,7 @@ function Search() {
 
     try {
       const response = await axios.get(
-        `https://todo-assistant-2kb0.onrender.com/search?query=${searchQuery}`
+        `https://todo-backend-tc9m.onrender.com/search?query=${searchQuery}`
       );
       setSearchResults(response.data);
       setSearched(true);

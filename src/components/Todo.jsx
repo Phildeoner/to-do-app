@@ -25,7 +25,7 @@ function Todo() {
     async function fetchTodos() {
       try {
         const response = await axios.get(
-          "https://todo-assistant-2kb0.onrender.com/todos"
+          "https://todo-backend-tc9m.onrender.com/todos"
         );
         setTodos(response.data);
       } catch (error) {
@@ -48,7 +48,7 @@ function Todo() {
 
       const newTodo = { task, completed: false, tags, hashtags };
       const response = await axios.post(
-        "https://todo-assistant-2kb0.onrender.com/todos",
+        "https://todo-backend-tc9m.onrender.com/todos",
         newTodo
       );
       setTodos([...todos, response.data]);
@@ -61,9 +61,7 @@ function Todo() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(
-        `https://todo-assistant-2kb0.onrender.com/todos/${id}`
-      );
+      await axios.delete(`https://todo-backend-tc9m.onrender.com/todos/${id}`);
       setTodos(todos.filter((todo) => todo._id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
@@ -83,7 +81,7 @@ function Todo() {
 
       const todoToUpdate = updatedTodos.find((todo) => todo._id === id);
       await axios.put(
-        `https://todo-assistant-2kb0.onrender.com/todos/${id}`,
+        `https://todo-backend-tc9m.onrender.com/todos/${id}`,
         todoToUpdate
       );
     } catch (error) {
@@ -99,7 +97,7 @@ function Todo() {
 
   const clearTodos = async () => {
     try {
-      await axios.delete("https://todo-assistant-2kb0.onrender.com/todos");
+      await axios.delete("https://todo-backend-tc9m.onrender.com/todos");
       setTodos([]);
       toast.success("Todo List Successfully Cleared!");
     } catch (error) {

@@ -10,7 +10,7 @@ function Signin() {
 
   const registerUser = async (username, password) => {
     const response = await axios.post(
-      "https://todo-assistant-2kb0.onrender.com/register",
+      "https://todo-backend-tc9m.onrender.com/register",
       {
         username,
         password,

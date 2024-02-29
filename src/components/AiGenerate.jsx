@@ -11,13 +11,10 @@ function AiGenerate({ onTodoAdded }) {
 
   const saveTodoToServer = async (todo) => {
     try {
-      const response = await axios.post(
-        "https://todo-assistant-2kb0.onrender.com/todos",
-        {
-          task: todo,
-          completed: false,
-        }
-      );
+      const response = await axios.post("https://todo-backend-tc9m.onrender.com/todos", {
+        task: todo,
+        completed: false,
+      });
       onTodoAdded(response.data); // Update the main Todo list
     } catch (error) {
       console.error("Error saving to-do to the server:", error);
@@ -34,12 +31,9 @@ function AiGenerate({ onTodoAdded }) {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "https://todo-assistant-2kb0.onrender.com/create-todo",
-        {
-          userInput,
-        }
-      );
+      const response = await axios.post("https://todo-backend-tc9m.onrender.com/create-todo", {
+        userInput,
+      });
 
       setAiTodos(response.data.todos);
       toast.success("To-Do list created successfully!");
@@ -69,7 +63,7 @@ function AiGenerate({ onTodoAdded }) {
           <>
             <textarea
               rows="4"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-700 focus:border-gray-700"
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-700 focus:border-gray-700"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Describe the to-do list you want..."></textarea>
